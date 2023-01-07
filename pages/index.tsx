@@ -1,11 +1,81 @@
+import React, { ButtonHTMLAttributes, MouseEventHandler } from 'react'
 import Head from 'next/head'
 import Image from 'next/image'
 import { Inter } from '@next/font/google'
 import styles from '../styles/Home.module.css'
+import { injected } from '../components/wallet/connectors'
+import { useWeb3React } from '@web3-react/core'
 
-const inter = Inter({ subsets: ['latin'] })
+// const inter = Inter({ subsets: ['latin'] })
+
+type currencyType = {
+  nep: number | string;
+  busd: number | string;
+}
+
+type ActionType = {
+  type: string;
+  inputValue: number;
+}
+
+
+const reducer = (state: currencyType, action:ActionType) => {
+  console.log(action)
+  switch (action.type) {
+    case 'nep':
+       return {
+        nep: action.inputValue,
+        busd: action.inputValue * 3,
+      }
+    case 'busd' :
+      return {
+        busd: action.inputValue,
+        nep: (action.inputValue / 3)
+      }
+      default: 
+      return state;
+  }
+}
+
+type ActiveStatusChecker = {
+  isActive: boolean;
+}
+
+export const ActiveStatusChecker:React.FC<ActiveStatusChecker> = ({isActive}) => {
+  if (isActive) return <p>Active</p>
+  return (
+    <div>Not Active</div>
+  )
+}
+
 
 export default function Home() {
+  const [state, dispatch] = React.useReducer(reducer, {nep: '', busd: ''});
+
+  const handleInputChange = (type: string) => (e: React.ChangeEvent<HTMLInputElement>) => {
+    const {value} = e.target;
+    dispatch({
+      type,
+      inputValue: parseInt(value)
+    })
+  }
+
+  const {active, account, library, connector, activate, deactivate} = useWeb3React();
+  console.log({active, account, library})
+
+  const connect = async() => {
+    try {
+      await activate(injected);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  const handelWalletStatusCheck = (event: any) => {
+    console.log(event);
+    connect()
+  }
+
   return (
     <>
       <Head>
@@ -15,108 +85,17 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className={styles.main}>
-        <div className={styles.description}>
-          <p>
-            Get started by editing&nbsp;
-            <code className={styles.code}>pages/index.tsx</code>
-          </p>
-          <div>
-            <a
-              href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              By{' '}
-              <Image
-                src="/vercel.svg"
-                alt="Vercel Logo"
-                className={styles.vercelLogo}
-                width={100}
-                height={24}
-                priority
-              />
-            </a>
-          </div>
-        </div>
+        <form action="" method='POST'>
+          <label htmlFor="nepali_currency">NEP</label>
+          <input type="number" name="nepali_currency" onChange={handleInputChange('nep')}  value={(state.nep)} placeholder='Nepal Currency ' />
 
-        <div className={styles.center}>
-          <Image
-            className={styles.logo}
-            src="/next.svg"
-            alt="Next.js Logo"
-            width={180}
-            height={37}
-            priority
-          />
-          <div className={styles.thirteen}>
-            <Image
-              src="/thirteen.svg"
-              alt="13"
-              width={40}
-              height={31}
-              priority
-            />
-          </div>
-        </div>
+          <label htmlFor='busd_currency'>BUSD</label>
+          <input type="number" name="busd_currency" onChange={handleInputChange('busd')} value={state.busd} placeholder='BUSD currency' />
 
-        <div className={styles.grid}>
-          <a
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <h2 className={inter.className}>
-              Docs <span>-&gt;</span>
-            </h2>
-            <p className={inter.className}>
-              Find in-depth information about Next.js features and&nbsp;API.
-            </p>
-          </a>
+          <button type='button' onClick={handelWalletStatusCheck}>Check Wallet details</button>
 
-          <a
-            href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <h2 className={inter.className}>
-              Learn <span>-&gt;</span>
-            </h2>
-            <p className={inter.className}>
-              Learn about Next.js in an interactive course with&nbsp;quizzes!
-            </p>
-          </a>
-
-          <a
-            href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <h2 className={inter.className}>
-              Templates <span>-&gt;</span>
-            </h2>
-            <p className={inter.className}>
-              Discover and deploy boilerplate example Next.js&nbsp;projects.
-            </p>
-          </a>
-
-          <a
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <h2 className={inter.className}>
-              Deploy <span>-&gt;</span>
-            </h2>
-            <p className={inter.className}>
-              Instantly deploy your Next.js site to a shareable URL
-              with&nbsp;Vercel.
-            </p>
-          </a>
-        </div>
+          <ActiveStatusChecker isActive={active} />
+        </form>
       </main>
     </>
   )
