@@ -1,11 +1,11 @@
 import React, { Dispatch, ReducerAction } from "react";
-import { Button } from "antd";
+import { Button, Col, Row } from "antd";
 import { TransactionOutlined } from "@ant-design/icons";
 
-type currencyType = {
-  nep: number | string;
-  busd: number | string;
-};
+enum CurrencyType {
+  BUSD = "busd",
+  NEP = "nep",
+}
 
 type ActionType = {
   type: string;
@@ -24,7 +24,7 @@ const handleInputChange =
     });
   };
 
-const reducer = (state: currencyType, action: ActionType) => {
+const reducer = (state: CurrencyType, action: ActionType) => {
   console.log(action);
   switch (action.type) {
     case "nep":
@@ -35,7 +35,7 @@ const reducer = (state: currencyType, action: ActionType) => {
     case "busd":
       return {
         busd: action.inputValue,
-        nep: action.inputValue / 3,
+        nep: Number(action.inputValue / 3).toFixed(2),
       };
     default:
       return state;
@@ -50,7 +50,10 @@ type handlersType = {
 };
 
 const ConverterForm: React.FC<handlersType> = ({ handlers }) => {
-  const [state, dispatch] = React.useReducer(reducer, { nep: "", busd: "" });
+  const [state, dispatch] = React.useReducer(reducer, {
+    nep: 1,
+    busd: 3,
+  });
 
   return (
     <form action="" method="POST">
@@ -59,7 +62,7 @@ const ConverterForm: React.FC<handlersType> = ({ handlers }) => {
         type="number"
         name="nepali_currency"
         // @ts-ignore
-        onChange={handleInputChange("nep")(dispatch)}
+        onChange={handleInputChange(CurrencyType.NEP)(dispatch)}
         value={state.nep}
         placeholder="Nepal Currency "
       />
@@ -73,14 +76,18 @@ const ConverterForm: React.FC<handlersType> = ({ handlers }) => {
         type="number"
         name="busd_currency"
         // @ts-ignore
-        onChange={handleInputChange("busd")(dispatch)}
+        onChange={handleInputChange(CurrencyType.BUSD)(dispatch)}
         value={state.busd}
         placeholder="BUSD Equivalent"
       />
 
-      <Button type="primary" onClick={handlers.open}>
-        Check Wallet details
-      </Button>
+      <Row justify="center">
+        <Col span={24} style={{ textAlign: "center" }}>
+          <Button type="primary" onClick={handlers.open}>
+            Check Wallet details
+          </Button>
+        </Col>
+      </Row>
     </form>
   );
 };

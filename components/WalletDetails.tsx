@@ -1,16 +1,10 @@
 import { Table, Typography } from "antd";
 import { ColumnsType } from "antd/es/table";
 import React from "react";
-import { WalletDetailsContext } from "../pages";
-
-// type ActiveStatusChecker = {
-//   isActive: boolean;
-//   account: any;
-//   chainId: any;
-// };
+import { WalletContextType, WalletDetailsContext } from "../pages";
 
 interface DataType {
-  key: string;
+  key: number;
   name: string;
   value: number;
 }
@@ -28,25 +22,11 @@ const columns: ColumnsType<DataType> = [
   },
 ];
 
-const data: DataType[] = [
-  {
-    key: "1",
-    name: "John Brown",
-    value: 32,
-  },
-  {
-    key: "2",
-    name: "Jim Green",
-    value: 42,
-  },
-  {
-    key: "3",
-    name: "Joe Black",
-    value: 32,
-  },
-];
-
-function dataNormalizer({ account, chainId, balance }) {
+function dataNormalizer({
+  account,
+  chainId,
+  balance,
+}: Partial<WalletContextType>) {
   return [
     {
       key: 1,
@@ -79,6 +59,7 @@ const WalletDetails: React.FC = () => {
     );
   return (
     <Table
+      //@ts-ignore
       columns={columns}
       dataSource={dataNormalizer({ account, chainId, balance })}
       pagination={{ hideOnSinglePage: true }}

@@ -14,7 +14,7 @@ import useBalance from "../hooks/useBalanceHook";
 const { useToken } = theme;
 
 // const inter = Inter({ subsets: ['latin'] })
-type WalletContextType = {
+export type WalletContextType = {
   active: boolean;
   account: string | null | undefined;
   chainId: number | undefined;
@@ -38,7 +38,6 @@ export default function Home() {
   console.log({ library, account });
 
   const balance = useBalance({ library, account });
-  // console.log(balance);
 
   const connect = async () => {
     try {
@@ -70,7 +69,7 @@ export default function Home() {
       return;
     }
     disconnect();
-    setIsModalOpen(false);
+    // setIsModalOpen(false);
   };
 
   return (
