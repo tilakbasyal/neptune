@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback } from "react";
 
 function useBalance({
   library,
@@ -13,15 +13,11 @@ function useBalance({
     return await library.eth
       .getBalance(account)
       .then((balance: any) => {
-        // if (!stale) {
         console.log(balance);
         setBalance(balance);
-        // }
       })
       .catch(() => {
-        // if (!stale) {
         setBalance(0);
-        // }
       });
   }, [account, library]);
 
@@ -29,9 +25,8 @@ function useBalance({
     if (library) {
       getBalance();
     }
-
-    return () => {};
   }, [getBalance, library]);
+
   return balance;
 }
 

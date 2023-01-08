@@ -34,15 +34,17 @@ export default function Home() {
   const { active, account, activate, deactivate, chainId, library } =
     useWeb3React();
   const [isModalOpen, setIsModalOpen] = React.useState<boolean>(false);
-
-  console.log({ library, account });
+  const [loading, setLoading] = React.useState<boolean>(false);
+  const [error, setError] = React.useState<boolean>(false);
 
   const balance = useBalance({ library, account });
 
   const connect = async () => {
     try {
+      setLoading(true);
       await activate(injected);
     } catch (error) {
+      setError(true);
       console.log(error);
     }
   };
@@ -50,7 +52,9 @@ export default function Home() {
   const disconnect = async () => {
     try {
       deactivate();
+      setLoading(true);
     } catch (error) {
+      setError(true);
       console.error(error);
     }
   };
@@ -65,10 +69,13 @@ export default function Home() {
 
   const handleOk = () => {
     if (!active) {
-      connect();
+      connect().then(() => {
+        setLoading(false);
+      });
       return;
     }
     disconnect();
+    setLoading(false);
     // setIsModalOpen(false);
   };
 
@@ -115,6 +122,7 @@ export default function Home() {
                 confirm: handleOk,
                 cancel: handleCancel,
               }}
+              confirmLoading={loading}
             />
           </WalletDetailsContext.Provider>
         </div>

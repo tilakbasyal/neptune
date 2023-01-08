@@ -14,7 +14,6 @@ type ActionType = {
 
 const handleInputChange =
   (type: string) =>
-  // (dispatch: () => React.Dispatch<{ type: string; inputValue: any }>) =>
   (dispatch: Dispatch<ReducerAction<() => void>>) =>
   (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;

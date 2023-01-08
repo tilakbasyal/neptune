@@ -9,6 +9,11 @@ interface DataType {
   value: number;
 }
 
+enum TableKeyType {
+  ACCOUNT = "Account",
+  CHAINID = "ChainId",
+  BALANCE = "Balance",
+}
 const columns: ColumnsType<DataType> = [
   {
     title: "Name",
@@ -30,17 +35,17 @@ function dataNormalizer({
   return [
     {
       key: 1,
-      name: "account",
+      name: TableKeyType.ACCOUNT,
       value: account,
     },
     {
       key: 2,
-      name: "ChainId",
+      name: TableKeyType.CHAINID,
       value: chainId,
     },
     {
       key: 3,
-      name: "Balance",
+      name: TableKeyType.BALANCE,
       value: balance,
     },
   ];

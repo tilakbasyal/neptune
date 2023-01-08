@@ -12,6 +12,7 @@ type WalletModalPropsType = {
     confirm: () => void;
     cancel: () => void;
   };
+  confirmLoading: boolean;
 };
 
 const WalletDetailsModal: React.FC<WalletModalPropsType> = ({
@@ -19,8 +20,10 @@ const WalletDetailsModal: React.FC<WalletModalPropsType> = ({
   open,
   okText,
   handlers,
+  confirmLoading,
 }) => {
   const { confirm, cancel } = handlers;
+  const { active } = React.useContext(WalletDetailsContext);
   return (
     <Modal
       centered
@@ -29,7 +32,10 @@ const WalletDetailsModal: React.FC<WalletModalPropsType> = ({
       onOk={confirm}
       onCancel={cancel}
       okText={okText}
-      // confirmLoading={true}
+      confirmLoading={confirmLoading}
+      okButtonProps={{
+        danger: active,
+      }}
     >
       <WalletDetails />
     </Modal>
