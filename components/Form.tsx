@@ -1,4 +1,4 @@
-import React, { Dispatch, ReducerAction } from "react";
+import React, { Dispatch, MutableRefObject, ReducerAction } from "react";
 import { Button, Col, Row } from "antd";
 import { TransactionOutlined } from "@ant-design/icons";
 
@@ -54,10 +54,27 @@ const ConverterForm: React.FC<handlersType> = ({ handlers }) => {
     busd: 3,
   });
 
+  const inputElNep = React.useRef<HTMLInputElement>(null);
+
+  // function setCaretPosition(element, length) {
+  //   if (element.setSelectionRange) {
+  //     element.focus();
+  //     element.setSelectionRange(length, length);
+  //   }
+  // }
+
+  React.useEffect(() => {
+    if (inputElNep.current) {
+      // setCaretPosition(inputElNep, inputElNep.current.value.length);
+      inputElNep.current.focus();
+    }
+  }, []);
+
   return (
     <form action="" method="POST">
       <label htmlFor="nepali_currency">NEP</label>
       <input
+        ref={inputElNep}
         type="number"
         name="nepali_currency"
         // @ts-ignore
