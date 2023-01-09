@@ -34,7 +34,7 @@ const ConverterForm: React.FC<handlersType> = ({ handlers }) => {
       />
       {state.error === "nepError" && <InputError />}
 
-      <div style={{ textAlign: "center", margin: "12px auto" }}>
+      <div style={{ textAlign: "center", margin: "24px auto 0" }}>
         <TransactionOutlined style={{ fontSize: 32 }} />
       </div>
 
