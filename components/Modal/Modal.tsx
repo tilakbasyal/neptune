@@ -1,19 +1,8 @@
 import { Modal } from "antd";
 import React from "react";
-import { WalletDetailsContext } from "../pages";
-import WalletDetails from "./WalletDetails";
-
-type WalletModalPropsType = {
-  title: string;
-  open: boolean;
-  okText: string;
-  handlers: {
-    open: () => void;
-    confirm: () => void;
-    cancel: () => void;
-  };
-  confirmLoading: boolean;
-};
+import { WalletDetailsContext } from "../../pages";
+import WalletDetails from "../WalletDetails/WalletDetails";
+import { WalletModalPropsType } from "./modal.types";
 
 const WalletDetailsModal: React.FC<WalletModalPropsType> = ({
   title,

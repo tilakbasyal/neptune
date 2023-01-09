@@ -7,9 +7,9 @@ import { useWeb3React } from "@web3-react/core";
 
 // antd
 import { theme } from "antd";
-import ConverterForm from "../components/Form";
-import WalletModal from "../components/Modal";
-import TitleWithImage from "../components/TitleWithImage";
+import ConverterForm from "../components/Form/Form";
+import WalletModal from "../components/Modal/Modal";
+import TitleWithImage from "../components/TitleWithImage/TitleWithImage";
 import useBalance from "../hooks/useBalanceHook";
 const { useToken } = theme;
 
