@@ -19,14 +19,14 @@ const WalletDetailsModal: React.FC<WalletModalPropsType> = ({
       open={open}
       title={title}
       onOk={confirm}
-      onCancel={cancel}
       okText={okText}
-      confirmLoading={confirmLoading}
       okButtonProps={{
         danger: active,
       }}
+      onCancel={cancel}
+      confirmLoading={confirmLoading}
     >
-      <WalletDetails />
+      <WalletDetails loading={confirmLoading} />
     </Modal>
   );
 };

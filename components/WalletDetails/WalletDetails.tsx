@@ -3,15 +3,23 @@ import { Table, Typography } from "antd";
 import { WalletDetailsContext } from "../../pages";
 import { columns, dataNormalizer } from "./walletDetails.helpet";
 
-const WalletDetails: React.FC = () => {
+const WalletDetails: React.FC<{ loading: boolean }> = ({ loading }) => {
   const { active, account, chainId, balance, error } =
     React.useContext(WalletDetailsContext);
 
-  if (error?.name && error.message) {
+  if (error?.name && error.message && !loading) {
     return (
       <>
         <Typography.Text type="danger">{error.message}</Typography.Text>
       </>
+    );
+  }
+
+  if (loading) {
+    return (
+      <Typography.Text>
+        Please hold on while we connect to your wallet.
+      </Typography.Text>
     );
   }
 

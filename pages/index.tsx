@@ -16,12 +16,6 @@ const { useToken } = theme;
 
 // const inter = Inter({ subsets: ['latin'] })
 
-interface Error {
-  name: string;
-  message: string;
-  stack?: string;
-}
-
 export const WalletDetailsContext = createContext<WalletContextType>({
   active: false,
   account: "",
