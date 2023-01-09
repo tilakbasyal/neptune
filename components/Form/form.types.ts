@@ -13,3 +13,8 @@ export type ActionType = {
   type: string;
   inputValue: number;
 };
+
+export enum InputErrorType {
+  nepError = "nepError",
+  busdError = "busdError",
+}

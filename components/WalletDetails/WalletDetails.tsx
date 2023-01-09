@@ -4,8 +4,16 @@ import { WalletDetailsContext } from "../../pages";
 import { columns, dataNormalizer } from "./walletDetails.helpet";
 
 const WalletDetails: React.FC = () => {
-  const { active, account, chainId, balance } =
+  const { active, account, chainId, balance, error } =
     React.useContext(WalletDetailsContext);
+
+  if (error?.name && error.message) {
+    return (
+      <>
+        <Typography.Text type="danger">{error.message}</Typography.Text>
+      </>
+    );
+  }
 
   if (!active)
     return (

@@ -22,7 +22,7 @@ const ConverterForm: React.FC<handlersType> = ({ handlers }) => {
 
   return (
     <form>
-      <label htmlFor="nepali_currency">NEP</label>
+      <label htmlFor="nepali_currency">NPR:</label>
       <input
         autoFocus
         type="number"
@@ -38,7 +38,7 @@ const ConverterForm: React.FC<handlersType> = ({ handlers }) => {
         <TransactionOutlined style={{ fontSize: 32 }} />
       </div>
 
-      <label htmlFor="busd_currency">BUSD</label>
+      <label htmlFor="busd_currency">BUSD:</label>
       <input
         type="number"
         value={state.busd}

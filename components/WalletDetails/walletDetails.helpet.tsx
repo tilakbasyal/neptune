@@ -1,6 +1,6 @@
 import { Typography } from "antd";
 import { ColumnsType } from "antd/es/table";
-import { WalletContextType } from "../../pages";
+import { WalletContextType } from "../../pages/types/index.types";
 import { DataType, TableKeyType } from "./walletDetails.types";
 
 export const columns: ColumnsType<DataType> = [

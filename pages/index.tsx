@@ -11,31 +11,35 @@ import ConverterForm from "../components/Form/Form";
 import WalletModal from "../components/Modal/Modal";
 import TitleWithImage from "../components/TitleWithImage/TitleWithImage";
 import useBalance from "../hooks/useBalanceHook";
+import { WalletContextType } from "./types/index.types";
 const { useToken } = theme;
 
 // const inter = Inter({ subsets: ['latin'] })
-export type WalletContextType = {
-  active: boolean;
-  account: string | null | undefined;
-  chainId: number | undefined;
-  balance: number;
-};
+
+interface Error {
+  name: string;
+  message: string;
+  stack?: string;
+}
 
 export const WalletDetailsContext = createContext<WalletContextType>({
   active: false,
   account: "",
   chainId: 0,
   balance: 1,
+  error: {
+    message: "",
+    name: "",
+  },
 });
 
 export default function Home() {
   const { token } = useToken();
 
-  const { active, account, activate, deactivate, chainId, library } =
+  const { active, account, activate, deactivate, chainId, library, error } =
     useWeb3React();
   const [isModalOpen, setIsModalOpen] = React.useState<boolean>(false);
   const [loading, setLoading] = React.useState<boolean>(false);
-  const [error, setError] = React.useState<boolean>(false);
 
   const balance = useBalance({ library, account });
 
@@ -44,8 +48,10 @@ export default function Home() {
       setLoading(true);
       await activate(injected);
     } catch (error) {
-      setError(true);
+      setLoading(false);
       console.log(error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -54,8 +60,10 @@ export default function Home() {
       deactivate();
       setLoading(true);
     } catch (error) {
-      setError(true);
+      setLoading(false);
       console.error(error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -69,13 +77,10 @@ export default function Home() {
 
   const handleOk = () => {
     if (!active) {
-      connect().then(() => {
-        setLoading(false);
-      });
+      connect();
       return;
     }
     disconnect();
-    setLoading(false);
     // setIsModalOpen(false);
   };
 
@@ -111,18 +116,18 @@ export default function Home() {
           />
 
           <WalletDetailsContext.Provider
-            value={{ active, account, chainId, balance }}
+            value={{ active, account, chainId, balance, error }}
           >
             <WalletModal
               open={isModalOpen}
-              title="Wallet Details"
-              okText={!active ? "Connect to wallet" : "Disconnect From Wallet"}
               handlers={{
                 open: showModal,
                 confirm: handleOk,
                 cancel: handleCancel,
               }}
+              title="Wallet Details"
               confirmLoading={loading}
+              okText={!active ? "Connect to wallet" : "Disconnect From Wallet"}
             />
           </WalletDetailsContext.Provider>
         </div>
