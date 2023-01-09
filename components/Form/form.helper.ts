@@ -8,7 +8,7 @@ export const handleInputChange =
     const { value } = e.target;
     dispatch({
       type,
-      inputValue: parseInt(value),
+      inputValue: value,
     });
   };
 

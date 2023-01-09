@@ -10,8 +10,8 @@ const ConverterForm: React.FC<handlersType> = ({ handlers }) => {
   const inputElNep = React.useRef<HTMLInputElement>(null);
 
   const [state, dispatch] = React.useReducer<Reducer<any, any>>(reducer, {
-    nep: 1,
-    busd: 3,
+    nep: "",
+    busd: "",
   });
 
   React.useEffect(() => {
@@ -29,7 +29,7 @@ const ConverterForm: React.FC<handlersType> = ({ handlers }) => {
         ref={inputElNep}
         value={state.nep}
         name="nepali_currency"
-        placeholder="Nepal Currency "
+        placeholder="Please input Nepal Currency "
         onChange={handleInputChange(CurrencyType.NEP)(dispatch)}
       />
       {state.error === "nepError" && <InputError />}
